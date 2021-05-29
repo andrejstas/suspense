@@ -1,19 +1,11 @@
-import { Suspense, useState, useEffect } from "react";
+import { Suspense } from "react";
 
 import { UserProfile } from "./UserProfile";
-import { fetchUserProfile } from "./fetchUserProfile";
 
-const SuspensefulUserProfile = ({ userId }) => {
-  const [data, setData] = useState({});
-  useEffect(() => {
-    fetchUserProfile(userId).then((profile) => setData(profile));
-  }, [userId, setData]);
-
-  return (
-    <Suspense>
-      <UserProfile data={data} />
-    </Suspense>
-  );
-};
+const SuspensefulUserProfile = ({ fetchData }) => (
+  <Suspense fallback={<h1>Loading user data...</h1>}>
+    <UserProfile fetchData={fetchData} />
+  </Suspense>
+);
 
 export { SuspensefulUserProfile };

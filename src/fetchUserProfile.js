@@ -13,11 +13,44 @@ const data = {
   },
 };
 
-const fetchUserProfile = (userId) =>
-  new Promise((resolve, reject) => {
+const fetchUserProfile = (userId) => {
+  console.log("userId", userId);
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(data[userId]);
-    }, 3000);
+    }, 2000);
   });
+};
 
-export { fetchUserProfile };
+function wrapPromise(promise) {
+  let status = "pending";
+  let result;
+  let suspender = promise.then(
+    (r) => {
+      status = "success";
+      result = r;
+    },
+    (e) => {
+      status = "error";
+      result = e;
+    }
+  );
+  return {
+    read() {
+      if (status === "pending") {
+        throw suspender;
+      } else if (status === "error") {
+        throw result;
+      } else if (status === "success") {
+        return result;
+      }
+    },
+  };
+}
+
+const fetchUserProfileWithStatus = (userId) => {
+  const data = fetchUserProfile(userId);
+  return wrapPromise(data);
+};
+
+export { fetchUserProfileWithStatus };

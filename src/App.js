@@ -16,13 +16,14 @@
 
 import "./App.css";
 import { SuspensefulUserProfile } from "./SuspensefulUserProfile";
+import { fetchUserProfileWithStatus } from "./fetchUserProfile";
 
 function App() {
   return (
     <div className="App">
-      <SuspensefulUserProfile userId={1} />
-      <SuspensefulUserProfile userId={2} />
-      <SuspensefulUserProfile userId={3} />
+      <SuspensefulUserProfile fetchData={fetchUserProfileWithStatus(1)} />
+      <SuspensefulUserProfile fetchData={fetchUserProfileWithStatus(2)} />
+      <SuspensefulUserProfile fetchData={fetchUserProfileWithStatus(3)} />
     </div>
   );
 }
